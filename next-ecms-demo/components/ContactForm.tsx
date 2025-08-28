@@ -9,6 +9,7 @@ type FormState = {
   careType: string;
   startDate: string;
   notes: string;
+  company?: string; // honeypot, must stay empty
 };
 
 export default function ContactForm() {
@@ -19,32 +20,92 @@ export default function ContactForm() {
     careType: "Personal Care",
     startDate: "",
     notes: "",
+    company: "",
   });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
-    "idle"
-  );
+
+  const [status, setStatus] =
+    useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [message, setMessage] = useState<string>("");
 
   function onChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) {
     const { name, value } = e.target;
     setState((s) => ({ ...s, [name]: value }));
   }
 
+  function validate(): string | null {
+    if (!state.name.trim()) return "Please enter your full name.";
+    if (!state.phone.trim()) return "Please enter a phone number.";
+    if (!state.email.trim()) return "Please enter an email address.";
+    if (!/^\S+@\S+\.\S+$/.test(state.email))
+      return "Please enter a valid email.";
+    if (state.company) return "Bot detected."; // honeypot filled
+    return null;
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setMessage("");
+
+    const err = validate();
+    if (err) {
+      setStatus("error");
+      setMessage(err);
+      return;
+    }
+
     try {
       setStatus("sending");
-      // TODO: wire to Strapi email/send endpoint or your inbox service
-      await new Promise((r) => setTimeout(r, 900));
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: state.name,
+          phone: state.phone,
+          email: state.email,
+          careType: state.careType,
+          startDate: state.startDate,
+          notes: state.notes,
+        }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
       setStatus("sent");
-    } catch (err) {
+      setMessage("Thanks! We received your request and will contact you shortly.");
+      setState({
+        name: "",
+        phone: "",
+        email: "",
+        careType: state.careType, // keep the selection
+        startDate: "",
+        notes: "",
+        company: "",
+      });
+    } catch {
       setStatus("error");
+      setMessage("Sorry, something went wrong. Please try again or call us.");
     }
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4">
+    <form onSubmit={onSubmit} className="grid gap-4" aria-live="polite">
+      {/* Honeypot */}
+      <div className="hidden">
+        <label htmlFor="company">Company</label>
+        <input
+          id="company"
+          name="company"
+          type="text"
+          value={state.company}
+          onChange={onChange}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       {/* Full Name */}
       <div className="grid gap-1.5">
         <label htmlFor="name" className="form-label">Full Name</label>
@@ -128,8 +189,10 @@ export default function ContactForm() {
           id="notes"
           name="notes"
           className="textarea-solid"
+          rows={5}
           value={state.notes}
           onChange={onChange}
+          placeholder="Anything we should know?"
         />
       </div>
 
@@ -137,16 +200,26 @@ export default function ContactForm() {
       <div className="pt-2">
         <button
           type="submit"
-          className="btn-primary"
-          disabled={status === "sending"}
+          // Use Tailwind so it’s visible even if btn-primary isn’t defined
+          className="rounded-lg bg-sky-700 px-5 py-2.5 font-medium text-white shadow hover:bg-sky-800 disabled:opacity-50"
+          disabled={status === "sending" || status === "sent"}
+          aria-label="Request Care"
         >
-          {status === "sending" ? "Sending..." : "Request Care"}
+          {status === "sending" ? "Sending..." : status === "sent" ? "Sent" : "Request Care"}
         </button>
-        {status === "sent" && (
-          <span className="ml-3 text-sm text-green-600">Thanks! We’ll be in touch soon.</span>
-        )}
-        {status === "error" && (
-          <span className="ml-3 text-sm text-red-600">Something went wrong. Please try again.</span>
+
+        {message && (
+          <span
+            className={`ml-3 text-sm ${
+              status === "sent"
+                ? "text-green-600"
+                : status === "error"
+                ? "text-red-600"
+                : "text-zinc-700"
+            }`}
+          >
+            {message}
+          </span>
         )}
       </div>
     </form>

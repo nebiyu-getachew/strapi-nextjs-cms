@@ -4,9 +4,13 @@ import Link from "next/link";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       {/* make the whole app a flex column so the footer sticks to the bottom */}
-      <body className="min-h-screen bg-zinc-50 text-zinc-900 flex flex-col">
+      <body
+        className="min-h-screen bg-zinc-50 text-zinc-900 flex flex-col"
+        suppressHydrationWarning
+        data-gramm="false"      // optional: tells Grammarly not to inject
+      >
         {/* HEADER: deep blue */}
         <header className="sticky top-0 z-40 border-b bg-sky-900 text-white/90">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
@@ -33,8 +37,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <p className="text-sm opacity-95">
               © {new Date().getFullYear()} SERENITY AT HOME · All rights reserved.
             </p>
-
-            {/* hiring bar pinned to the right inside the footer */}
             <div className="rounded-xl border border-white/25 bg-white/10 px-4 py-3 text-sm shadow-sm max-w-md">
               <div className="font-semibold">We’re Hiring Compassionate Caregivers</div>
               <div className="opacity-90">
