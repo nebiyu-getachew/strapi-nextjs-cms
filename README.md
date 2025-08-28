@@ -19,7 +19,7 @@ It provides information about services, caregivers, and allows families to reque
 ## 📸 Screenshots
 
 ### Home Page
-![Home Page](public/images/home.png)
+![Home Page](next-ecms-demo/public/images/home.png)
 
 ---
 
