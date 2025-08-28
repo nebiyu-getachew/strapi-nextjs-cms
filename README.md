@@ -1,5 +1,3 @@
----
-
 ```markdown
 # Serenity At Home 🌿
 
@@ -22,22 +20,22 @@ It provides information about services, caregivers, and allows families to reque
 ## 📸 Screenshots
 
 ### Home Page
-![Home Page](public/images/home.png)
+![Home Page](next-ecms-demo/public/images/home.png)
 
 ---
 
 ### About Us
-![About Us](public/images/about.png)
+![About Us](next-ecms-demo/public/images/about.png)
 
 ---
 
 ### Our Services
-![Our Services](public/images/services.png)
+![Our Services](next-ecms-demo/public/images/services.png)
 
 ---
 
 ### Contact Page
-![Contact Page](public/images/contact.png)
+![Contact Page](next-ecms-demo/public/images/contact.png)
 
 ---
 
@@ -129,6 +127,3 @@ This project is licensed under the MIT License.
 © 2025 **Serenity At Home** · All rights reserved.
 
 ```
-
----
-
