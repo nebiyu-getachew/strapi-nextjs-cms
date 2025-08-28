@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "intakes",
+  "info": {
+    "singularName": "intake",
+    "pluralName": "intakes",
+    "displayName": "Intake"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fullName": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "careType": {
+      "type": "enumeration",
+      "enum": [
+        "Personal Care, Companionship, Meal Prep, Medication Reminders, Housekeeping, Dementia/Alzheimer’s, Respite Care, 24-Hour/Live-in, Other"
+      ]
+    },
+    "preferredStartDate": {
+      "type": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
