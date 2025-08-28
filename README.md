@@ -1,4 +1,3 @@
-```markdown
 # Serenity At Home 🌿
 
 A modern home care service website built with **Next.js 13 (App Router)**, **TypeScript**, and **TailwindCSS**.  
@@ -20,22 +19,22 @@ It provides information about services, caregivers, and allows families to reque
 ## 📸 Screenshots
 
 ### Home Page
-![Home Page](next-ecms-demo/public/images/home.png)
+![Home Page](public/images/home.png)
 
 ---
 
 ### About Us
-![About Us](next-ecms-demo/public/images/about.png)
+![About Us](public/images/about.png)
 
 ---
 
 ### Our Services
-![Our Services](next-ecms-demo/public/images/services.png)
+![Our Services](public/images/services.png)
 
 ---
 
 ### Contact Page
-![Contact Page](next-ecms-demo/public/images/contact.png)
+![Contact Page](public/images/contact.png)
 
 ---
 
@@ -52,8 +51,7 @@ It provides information about services, caregivers, and allows families to reque
 
 ## 📂 Project Structure
 
-```
-
+```plaintext
 app/
 ├── layout.tsx        # Root layout with header + footer
 ├── home/             # Home page
@@ -67,9 +65,8 @@ components/
 lib/
 ├── api.ts            # Fetch from Strapi
 ├── utils.ts          # Utility helpers
-public/images/         # Slideshow images
-
-````
+public/images/         # Slideshow + screenshots
+```
 
 ---
 
@@ -81,10 +78,10 @@ public/images/         # Slideshow images
    ```env
    NEXT_PUBLIC_API_URL=https://your-strapi-instance.com
    CONTACT_RECEIVER_EMAIL=Serenityathome7@gmail.com
-````
+   ```
 
-* `NEXT_PUBLIC_API_URL` → Your Strapi backend or CMS.
-* `CONTACT_RECEIVER_EMAIL` → Where form submissions will be sent.
+   * `NEXT_PUBLIC_API_URL` → Your Strapi backend or CMS.
+   * `CONTACT_RECEIVER_EMAIL` → Where form submissions will be sent.
 
 2. **Install Dependencies**
 
@@ -125,5 +122,3 @@ This project is licensed under the MIT License.
 ---
 
 © 2025 **Serenity At Home** · All rights reserved.
-
-```
