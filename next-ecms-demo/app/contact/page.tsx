@@ -1,28 +1,22 @@
-// app/contact/page.tsx
-import { fetchArticleBySlug, blocksWithEscapedHtmlToHtml } from "@/lib/api";
 import ContactForm from "@/components/ContactForm";
 
-export const dynamic = "force-dynamic";
-
-export default async function ContactPage() {
-  const article = await fetchArticleBySlug("contact").catch(() => null);
-  const title = article?.Title ?? "Contact Us";
-  const html = article?.Body ? blocksWithEscapedHtmlToHtml(article.Body) : "";
-
+export default function ContactPage() {
   return (
-    <section className="grid gap-6">
-      <article className="prose prose-zinc max-w-none">
-        <h1>{title}</h1>
-        {html && <div dangerouslySetInnerHTML={{ __html: html }} />}
-      </article>
+    <div className="container">
 
-      {/* Form panel */}
-      <div className="rounded-2xl border bg-white p-6">
-        <ContactForm />
-      </div>
+      <h2>Let’s Connect</h2>
+      <p>We’re here to answer your questions and help you get started with care.</p>
 
-      {/* small spacer so the footer doesn’t crowd the form */}
-      <div className="h-4" />
-    </section>
+      <p><strong>Phone:</strong> 206-973-6729<br/>
+         <strong>Email:</strong> Serenityathome7@gmail.com
+      </p>
+
+      <p>Or fill out the contact form below, and we’ll reach out soon!</p>
+
+      <h2>Client Intake Form / Request Care</h2>
+      <p><em>Need Help at Home?</em> Please fill out the form below, and we’ll be in touch to schedule a free consultation.</p>
+
+      <ContactForm />
+    </div>
   );
 }

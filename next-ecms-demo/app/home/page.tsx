@@ -1,77 +1,85 @@
 // app/home/page.tsx
-import { fetchArticleBySlug, blocksWithEscapedHtmlToHtml } from "@/lib/api";
-import PhotoCarousel from "@/components/PhotoCarousel";
+import ImageCarousel from "@/components/ImageCarousel";
 
-export const dynamic = "force-dynamic";
-
-export default async function HomePage() {
-  const article = await fetchArticleBySlug("home").catch(() => null);
-  const title = article?.Title ?? "Welcome to SERENITY AT HOME";
-
-  // Convert Strapi blocks to HTML, then strip the 3 list links if present
-  let html = article?.Body ? blocksWithEscapedHtmlToHtml(article.Body) : "";
-  html = html.replace(
-    /<ul>[\s\S]*?(Get Care Now|Learn More About Our Services|Join Our Team)[\s\S]*?<\/ul>/gi,
-    ""
-  );
-
-  const benefits = [
-    { title: "Trusted Caregivers", desc: "Licensed, trained, and matched to your needs." },
-    { title: "Flexible Scheduling", desc: "Hourly, overnight, or 24/7 live-in support." },
-    { title: "Family Peace of Mind", desc: "Clear communication and dependable care." },
-  ];
-
-  const services = [
-    { title: "Personal Care", desc: "Bathing, grooming, dressing, & hygiene support." },
-    { title: "Companionship", desc: "Friendly conversation, activities, and outings." },
-    { title: "Meal & Med Support", desc: "Meal prep and timely medication reminders." },
-  ];
-
+export default function HomePage() {
   return (
-    <section className="space-y-8">
-      {/* Welcome (cleaned) */}
-      <article className="prose prose-zinc max-w-none">
-        <h1 className="mb-3">{title}</h1>
-        <div
-          dangerouslySetInnerHTML={{
-            __html:
-              html ||
-              `Welcome to <strong>SERENITY AT HOME</strong> where your loved one’s comfort, safety, and dignity come first. We provide personalized home care services designed to meet the unique needs of each client, right from the comfort of their home. Let us help bring peace of mind to your family.`,
-          }}
-        />
-      </article>
+    <div className="container space-y-12">
+      {/* Hero intro */}
+      <section className="section">
+        <h1 className="display">Welcome to SERENITY AT HOME</h1>
+        <p className="lead">
+          Welcome to <strong>SERENITY AT HOME</strong> where your loved one’s comfort, safety, and dignity
+          come first. We provide personalized home care services designed to meet the unique needs of each
+          client, right from the comfort of their home. Let us help bring peace of mind to your family.
+        </p>
 
-      {/* Slideshow */}
-      <div>
-        <h2 className="mb-3 text-xl font-semibold">Care, at Home</h2>
-        <PhotoCarousel />
-      </div>
+        <div className="card card-elevated">
+          <ImageCarousel />
+        </div>
 
-      {/* Benefits */}
-      <section>
-        <h2 className="mb-4 text-xl font-semibold">Why Families Choose Us</h2>
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {benefits.map((b, i) => (
-            <div key={i} className="rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md">
-              <h3 className="font-semibold">{b.title}</h3>
-              <p className="text-sm text-zinc-600">{b.desc}</p>
-            </div>
-          ))}
+        {/* CTA bar */}
+        <div className="cta-bar">
+          <a className="btn btn-primary" href="/contact">Get Care Now</a>
+          <a className="btn btn-secondary" href="/services">Learn More About Our Services</a>
+          <a className="btn btn-ghost" href="/careers">Join Our Team</a>
         </div>
       </section>
 
-      {/* Services */}
-      <section>
-        <h2 className="mb-4 text-xl font-semibold">How We Help</h2>
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {services.map((s, i) => (
-            <div key={i} className="rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md">
-              <h3 className="font-semibold">{s.title}</h3>
-              <p className="text-sm text-zinc-600">{s.desc}</p>
-            </div>
-          ))}
+      {/* Why Families Choose Us */}
+      <section className="section">
+        <h2 className="section-title">Why Families Choose Us</h2>
+
+        <div className="feature-grid">
+          <article className="card card-hover">
+            <h3 className="card-title">Trusted Caregivers</h3>
+            <p className="card-body">
+              Licensed, trained, and matched to your needs.
+            </p>
+          </article>
+
+          <article className="card card-hover">
+            <h3 className="card-title">Flexible Scheduling</h3>
+            <p className="card-body">
+              Hourly, overnight, or 24/7 live-in support.
+            </p>
+          </article>
+
+          <article className="card card-hover">
+            <h3 className="card-title">Family Peace of Mind</h3>
+            <p className="card-body">
+              Clear communication and dependable care.
+            </p>
+          </article>
         </div>
       </section>
-    </section>
+
+      {/* How We Help */}
+      <section className="section">
+        <h2 className="section-title">How We Help</h2>
+
+        <div className="feature-grid">
+          <article className="card card-hover">
+            <h3 className="card-title">Personal Care</h3>
+            <p className="card-body">
+              Bathing, grooming, dressing, &amp; hygiene support.
+            </p>
+          </article>
+
+          <article className="card card-hover">
+            <h3 className="card-title">Companionship</h3>
+            <p className="card-body">
+              Friendly conversation, activities, and outings.
+            </p>
+          </article>
+
+          <article className="card card-hover">
+            <h3 className="card-title">Meal &amp; Med Support</h3>
+            <p className="card-body">
+              Meal prep and timely medication reminders.
+            </p>
+          </article>
+        </div>
+      </section>
+    </div>
   );
 }

@@ -1,50 +1,59 @@
 // app/layout.tsx
 import "./globals.css";
-import Link from "next/link";
+import type { Metadata } from "next";
+import { strapiFetch } from "@/lib/strapi";
+import HeaderUI from "@/components/Header";
+import FooterUI from "@/components/Footer";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+  title: "Serenity at Home",
+  description: "Home care you can trust",
+};
+
+async function getGlobal() {
+  const json = await strapiFetch<any>({
+    path: "/api/global?populate=*",
+    next: { tags: ["global"] },
+  });
+  // Strapi can return {data:{id,attributes}} or just {data:{...}}
+  return (json?.data?.attributes ?? json?.data) as any;
+}
+
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const global = await getGlobal();
+
+  const theme = global?.theme ?? {};
+  const navbar = global?.navbar ?? {};
+
+  const styleVars: React.CSSProperties = {
+    ["--color-primary" as any]: navbar.backgroundColor ?? "#075391",
+    ["--color-secondary" as any]: theme.secondaryColor ?? "#E61D5F",
+    ["--color-surface" as any]: theme.surface ?? "#f6f7f9",
+    ["--color-onsurface" as any]: theme.onSurface ?? "#111111",
+    ["--header-h" as any]: "66px",
+    ["--footer-h" as any]: "84px",
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* make the whole app a flex column so the footer sticks to the bottom */}
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body
-        className="min-h-screen bg-zinc-50 text-zinc-900 flex flex-col"
+        style={styleVars}
+        className="bg-surface text-onsurface"
         suppressHydrationWarning
-        data-gramm="false"      // optional: tells Grammarly not to inject
       >
-        {/* HEADER: deep blue */}
-        <header className="sticky top-0 z-40 border-b bg-sky-900 text-white/90">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-            <Link href="/" className="font-semibold tracking-wide">
-              SERENITY AT HOME
-            </Link>
-            <nav className="flex gap-6 text-sm">
-              <Link href="/home" className="hover:underline">Home</Link>
-              <Link href="/about" className="hover:underline">About</Link>
-              <Link href="/services" className="hover:underline">Services</Link>
-              <Link href="/contact" className="hover:underline">Contact</Link>
-            </nav>
-          </div>
-        </header>
-
-        {/* MAIN grows to fill, pushing footer down */}
-        <main className="mx-auto max-w-6xl w-full px-4 py-8 flex-1">
-          {children}
-        </main>
-
-        {/* FOOTER: gradient, with hiring bar on the right */}
-        <footer className="border-t bg-gradient-to-r from-rose-600 to-sky-700 text-white">
-          <div className="mx-auto max-w-6xl w-full px-4 py-5 flex items-start justify-between gap-6">
-            <p className="text-sm opacity-95">
-              © {new Date().getFullYear()} SERENITY AT HOME · All rights reserved.
-            </p>
-            <div className="rounded-xl border border-white/25 bg-white/10 px-4 py-3 text-sm shadow-sm max-w-md">
-              <div className="font-semibold">We’re Hiring Compassionate Caregivers</div>
-              <div className="opacity-90">
-                Licensed HCA or looking to make a difference? Join our caring team.
-              </div>
-            </div>
-          </div>
-        </footer>
+        <HeaderUI navbar={global?.navbar} />
+        <main className="page-shell">{children}</main>
+        <FooterUI footer={global?.footer} banner={global?.notificationBanner} />
       </body>
     </html>
   );

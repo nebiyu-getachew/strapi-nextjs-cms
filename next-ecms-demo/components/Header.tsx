@@ -1,46 +1,75 @@
+// components/Header.tsx
 "use client";
 
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import clsx from "clsx";
+import { mediaURL } from "@/lib/strapi";
 
-const links = [
-  { href: "/home", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/contact", label: "Contact" },
+/** Local types so this file is copy-paste ready */
+type NavLink = { label?: string; url?: string; newTab?: boolean };
+type Media = { url?: string | null } | null;
+type Navbar = {
+  backgroundColor?: string | null;
+  textColor?: string | null;
+  siteName?: string | null;
+  logo?: Media;
+  links?: NavLink[];
+};
+
+const FALLBACK_LINKS: NavLink[] = [
+  { label: "Home", url: "/" },
+  { label: "About", url: "/about" },
+  { label: "Services", url: "/services" },
+  { label: "Contact", url: "/contact" },
 ];
 
-export default function Header() {
-  const pathname = usePathname() || "/";
+export default function HeaderUI({ navbar }: { navbar?: Navbar }) {
+  const bg = navbar?.backgroundColor ?? "#075391";
+  const fg = navbar?.textColor ?? "#ffffff";
+  const links = (navbar?.links?.length ? navbar.links : FALLBACK_LINKS) as NavLink[];
+  const siteName = navbar?.siteName ?? "SERENITY AT HOME";
+  const logoUrl = navbar?.logo?.url ? mediaURL(navbar.logo.url) : null;
 
   return (
-    <header className="sticky top-0 z-10 bg-white/90 backdrop-blur border-b">
-      <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
-        <a href="/home" className="flex items-center gap-3">
-          <Image src="/serenity-logo.svg" alt="Serenity at Home" width={32} height={32} priority />
-          <span className="font-semibold tracking-wide">SERENITY AT HOME</span>
+    <header
+      className="site-header"
+      style={{ background: bg, color: fg }}
+      role="banner"
+    >
+      <div
+        className="container"
+        style={{ display: "flex", alignItems: "center", height: "100%" }}
+      >
+        {/* Brand left */}
+        <a href="/" className="brand" style={{ color: fg, textDecoration: "none" }}>
+          {logoUrl ? (
+            <img src={logoUrl} alt={siteName} style={{ height: 34, width: "auto" }} />
+          ) : (
+            siteName
+          )}
         </a>
 
-        <nav className="flex gap-6 text-sm text-[--color-ink-2]">
-          {links.map((l) => {
-            const active = pathname === l.href;
-            return (
+        {/* Nav right */}
+        <nav
+          className="nav"
+          aria-label="Primary"
+          style={{ marginLeft: "auto", display: "flex", gap: 22, alignItems: "center" }}
+        >
+          {links.map((l, i) =>
+            l?.url ? (
               <a
-                key={l.href}
-                href={l.href}
-                className={clsx(
-                  "relative hover:text-[--color-brand-600] transition",
-                  active && "text-[--color-ink]"
-                )}
+                key={`${l.url}-${i}`}
+                href={l.url}
+                target={l.newTab ? "_blank" : "_self"}
+                style={{
+                  color: fg,
+                  textDecoration: "none",
+                  fontWeight: 600,
+                  opacity: 0.95,
+                }}
               >
-                {l.label}
-                {active && (
-                  <span className="absolute -bottom-2 left-0 right-0 h-[2px] bg-[--color-brand-600] rounded-full" />
-                )}
+                {l.label ?? l.url}
               </a>
-            );
-          })}
+            ) : null
+          )}
         </nav>
       </div>
     </header>

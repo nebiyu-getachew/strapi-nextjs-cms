@@ -1,27 +1,19 @@
-import { fetchArticleBySlug, blocksWithEscapedHtmlToHtml } from "@/lib/api";
-export const dynamic = "force-dynamic";
-
-export default async function ServicesPage() {
-  const article = await fetchArticleBySlug("services");
-  const title = article?.Title ?? "Our Services";
-  const html = article?.Body ? blocksWithEscapedHtmlToHtml(article.Body) : "";
-
+export default function ServicesPage() {
   return (
-    <article className="prose prose-zinc max-w-3xl">
-      <h1>{title}</h1>
-      {html ? (
-        <div dangerouslySetInnerHTML={{ __html: html }} />
-      ) : (
-        <ul className="list-disc pl-6">
-          <li>Personal Care Assistance</li>
-          <li>Companionship</li>
-          <li>Meal Preparation</li>
-          <li>Medication Reminders</li>
-          <li>Light Housekeeping</li>
-          <li>Dementia & Alzheimer’s Care</li>
-          <li>Respite Care for Families</li>
-        </ul>
-      )}
-    </article>
+    <div className="container">
+      <p>We proudly offer a range of in-home care services including:</p>
+      <ul>
+        <li><strong>Personal Care Assistance</strong> — Bathing, grooming, dressing, and hygiene support</li>
+        <li><strong>Companionship</strong> — Friendly conversation, activities, emotional support</li>
+        <li><strong>Meal Preparation</strong> — Healthy meal planning and cooking</li>
+        <li><strong>Medication Reminders</strong> — Ensuring medications are taken on time</li>
+        <li><strong>Light Housekeeping</strong> — Laundry, vacuuming, organizing, and tidying up</li>
+        <li><strong>Dementia &amp; Alzheimer’s Care</strong> — Safe, structured support tailored to memory care</li>
+        <li><strong>Respite Care for Families</strong> — Giving family caregivers a much-needed break</li>
+        <li><strong>24-Hour or Live-in Care</strong> — (If applicable)</li>
+      </ul>
+      <p>Each care plan is customized for your loved one’s needs.</p>
+      <p><a className="btn" href="/contact">Get Care Now →</a></p>
+    </div>
   );
 }

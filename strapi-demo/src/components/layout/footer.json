@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_layout_footers",
+  "info": {
+    "displayName": "Footer"
+  },
+  "options": {},
+  "attributes": {
+    "bgColorUpperSection": {
+      "type": "string"
+    },
+    "columns": {
+      "type": "component",
+      "component": "layout.footer-column",
+      "repeatable": true
+    },
+    "bgColorLowerSection": {
+      "type": "string"
+    },
+    "lowerContent": {
+      "type": "blocks"
+    },
+    "gradientStart": {
+      "type": "string"
+    },
+    "gradientEnd": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

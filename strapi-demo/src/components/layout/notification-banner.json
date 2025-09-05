@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_layout_notification_banners",
+  "info": {
+    "displayName": "Notification-Banner"
+  },
+  "options": {},
+  "attributes": {
+    "isEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "text": {
+      "type": "blocks"
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": false
+    },
+    "backgroundColor": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_layout_themes",
+  "info": {
+    "displayName": "Theme"
+  },
+  "options": {},
+  "attributes": {
+    "primaryColor": {
+      "type": "string"
+    },
+    "secondaryColor": {
+      "type": "string"
+    },
+    "surfaceColor": {
+      "type": "string"
+    },
+    "onSurfaceColor": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
